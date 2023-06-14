@@ -4,71 +4,57 @@
 
 #define DHTPIN 3 //Asignación de Pin
 #define DHTTYPE DHT11
-#define buttonPin 9 //Asignación de Pin
+#define boton 2 //Asignación de Pin para interrupcion externa
+
+int selectmenu=0; //Variable encargada de hacer la selección de menu
 
 DS3231 rtc(SDA, SCL);
 DHT dht(DHTPIN, DHTTYPE);
 LiquidCrystal lcd(12, 10, 7, 6, 5, 4);
 
-int menu = 3;
-int boton = HIGH;
-int ultimo_estado = HIGH;
-unsigned long lastDebounceTime = 0; //Variable para evitar rebote
-unsigned long debounceDelay = 50; //Variable para evitar rebote
 
 void setup() {
-  Serial.begin(9600);
   rtc.begin();
   lcd.begin(16, 2);
   dht.begin();
-  pinMode(buttonPin, INPUT);
+  pinMode(boton,INPUT);
+  attachInterrupt(boton,RISING,menu);
+  Serial.begin(9600);
 }
 
 void loop() {
-  int estado = digitalRead(boton); //Variable para determinar el estado del boton
+  
+menu();
 
-  //Segmento que se encagara de evitar el efecto rebote
-  if (estado != ultimo_estado) {
-    lastDebounceTime = millis();
-  }
 
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    if (estado != boton) {
-      boton = estado;
-
-      if (boton == LOW) {
-        menu++;
-        if (menu > 3) {
-          menu = 1;
-        }
-        lcd.clear();
-      }
-    }
-  }
-
-  ultimo_estado = estado;
-
-  do {
-    switch(menu) {
+}
+void menu(){
+  int estado=digitalRead(boton);
+  if(estado==HIGH){
+    selectmenu++;
+   switch(selectmenu) {
       case 1:
         Tiempo();
         delay(3000);
+        lcd.clear();
         break;
       case 2:
         Humedad_Tempe();
         delay(3000);
+        lcd.clear();
         break;
       case 3:
         Temperatura_Index();
         delay(3000);
+        lcd.clear();
         break;
       default:
         break;
     }
-  } while (boton == HIGH);
-  
-}
-
+    //Serial.println(selectmenu);
+    };
+    
+  }
 void Tiempo() {
   lcd.setCursor(0, 0);
   lcd.print("Hora: ");
