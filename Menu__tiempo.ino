@@ -28,11 +28,34 @@ menu();
 
 
 }
+/*void muest_disp(){
+  lcd.setCursor(0,0);
+  lcd.print("Bienvenido");
+  lcd.setCursor(1,1);
+  lcd.print("Selecciona el Menu");
+  lcd.scrollDisplayRight();
+  delay(3000);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("1: Tiempo y Hora");
+  lcd.setCursor(1,0);
+  lcd.print("2:Temp y Humedad");
+  delay(3000);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("3. Temperatura e Indice de calor");
+  lcd.scrollDisplayRight();
+  delay(3000);
+  
+  
+  
+  }
+  */
 void menu(){
   int estado=digitalRead(boton);
   if(estado==HIGH){
     selectmenu++;
-   switch(selectmenu) {
+    switch(selectmenu) {
       case 1:
         Tiempo();
         delay(3000);
@@ -52,9 +75,9 @@ void menu(){
         break;
     }
     //Serial.println(selectmenu);
-    };
     
   }
+}
 void Tiempo() {
   lcd.setCursor(0, 0);
   lcd.print("Hora: ");
@@ -91,7 +114,7 @@ void Temperatura_Index() {
   lcd.print(" C");
 
   lcd.setCursor(0, 1);
-  lcd.print("Ind.Calor:");
+  lcd.print("Index:");
   lcd.print(hic);
   lcd.print("C");
 }
