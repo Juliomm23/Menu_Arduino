@@ -16,7 +16,7 @@ int selectmenu=0; //Variable encargada de hacer la selección de menu
 
 DS3231 rtc(SDA, SCL);
 DHT dht(DHTPIN, DHTTYPE);
-//                RS  E   D4 D5 D6 D7               
+//                RS  E   D4 D5 D6 D7
 LiquidCrystal lcd(12, 10, 7, 6, 5, 4);
 
 
