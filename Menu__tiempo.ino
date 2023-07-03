@@ -1,15 +1,22 @@
+//#include <DHT_U.h>
 #include <DHT.h>
 #include <DS3231.h>
 #include <LiquidCrystal.h>
 
 #define DHTPIN 3 //Asignación de Pin
 #define DHTTYPE DHT11
+//#define DHTTYPE DHT22 //Sensor a elegir DHT22
+
+//#define DHTPIN1 9 //Pin de conexion 9 del arduino
+//#define DHTPIN2 8// Pin de conexion 8 del arduino 
+
 #define boton 2 //Asignación de Pin para interrupcion externa
 
 int selectmenu=0; //Variable encargada de hacer la selección de menu
 
 DS3231 rtc(SDA, SCL);
 DHT dht(DHTPIN, DHTTYPE);
+//                RS  E   D4 D5 D6 D7               
 LiquidCrystal lcd(12, 10, 7, 6, 5, 4);
 
 
@@ -18,43 +25,47 @@ void setup() {
   lcd.begin(16, 2);
   dht.begin();
   pinMode(boton,INPUT);
-  attachInterrupt(boton,RISING,menu);
   Serial.begin(9600);
 }
 
 void loop() {
-  
+
+
 menu();
 
 
 }
-/*void muest_disp(){
-  lcd.setCursor(0,0);
+void muest_disp(){
+  lcd.setCursor(3,0);
   lcd.print("Bienvenido");
-  lcd.setCursor(1,1);
-  lcd.print("Selecciona el Menu");
-  lcd.scrollDisplayRight();
+  lcd.setCursor(0,1);
+  lcd.print("Select. el Menu");
+  
   delay(3000);
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("1: Tiempo y Hora");
-  lcd.setCursor(1,0);
-  lcd.print("2:Temp y Humedad");
+  lcd.setCursor(0,1);
+  lcd.print("2: Temp y Humedad");
   delay(3000);
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("3. Temperatura e Indice de calor");
-  lcd.scrollDisplayRight();
+  lcd.print("3: Temp e Index");
+  lcd.setCursor(0,1);
+  lcd.print("4: Salir");
   delay(3000);
+  lcd.clear();
   
-  
-  
+
   }
-  */
+  
 void menu(){
+  //muest_disp();
+  
   int estado=digitalRead(boton);
   if(estado==HIGH){
     selectmenu++;
+    
     switch(selectmenu) {
       case 1:
         Tiempo();
@@ -71,10 +82,14 @@ void menu(){
         delay(3000);
         lcd.clear();
         break;
-      default:
-        break;
+        
+        default: 
+        selectmenu=0; //Reiniciar el Selector
+      
+        
+
     }
-    //Serial.println(selectmenu);
+    Serial.println(selectmenu);
     
   }
 }
