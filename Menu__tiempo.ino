@@ -1,4 +1,3 @@
-
 #include <DHT.h>
 #include <DS3231.h>
 #include <LiquidCrystal.h>
@@ -65,6 +64,7 @@ void menu() {
     switch (selectmenu) {
       case 1:
         Tiempo();
+        Serial.print(Tiempo());
         delay(3000);
         lcd.clear();
         break;
